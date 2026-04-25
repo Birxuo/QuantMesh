@@ -74,7 +74,7 @@ QuantMesh implements a three-tier agentic commerce stack designed for high-concu
 ### Core Components
 1.  **Provider (FastAPI + x402):** Serves quantitative signal endpoints behind a standard-compliant HTTP 402 payment wall.
 2.  **Consumer Agent (Python Asyncio):** A fully autonomous trading script. Each 3-second cycle, it analyzes market needs, signs EIP-3009 USDC authorizations, and executes sub-cent purchases.
-3.  **Gemini AI Reasoning Layer:** The consumer agent utilizes **Gemini 2.0 Flash** to reason about purchased signals, generating intelligent trade justifications instead of relying on hardcoded rules.
+3.  **Gemini AI Reasoning Layer (Optional):** The consumer agent can utilize **Gemini 2.0 Flash** to reason about purchased signals, generating intelligent trade justifications. This is disabled by default and can be toggled via environment variables.
 4.  **Real-time Dashboard (Next.js + Tailwind):** Professional observability suite streaming settlements, confidence scores, and economic multipliers via WebSockets.
 
 ---
