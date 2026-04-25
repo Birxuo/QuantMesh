@@ -35,6 +35,7 @@ PROVIDER_URL = os.getenv("PROVIDER_URL", "http://localhost:8000")
 CONSUMER_PRIVATE_KEY = os.getenv("CONSUMER_PRIVATE_KEY", "")
 CYCLE_INTERVAL = 3  # seconds between cycles
 MIN_BALANCE_USDC = 0.10  # auto-pause threshold
+USDC_CONTRACT_ADDRESS = os.getenv("USDC_CONTRACT_ADDRESS", "0x036CbD53842c5426634e7929541eC2318f3dCF7e")
 
 
 def _setup_x402_client():
@@ -47,7 +48,7 @@ def _setup_x402_client():
 
     account = Account.from_key(CONSUMER_PRIVATE_KEY)
     signer = EthAccountSigner(account)
-    register_exact_evm_client(client, signer)
+    register_exact_evm_client(client, signer, token_address=USDC_CONTRACT_ADDRESS)
 
     print(f"🔑 Consumer wallet: {account.address}")
     return client, account

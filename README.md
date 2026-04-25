@@ -43,13 +43,13 @@ QuantMesh implements a three-tier agentic commerce stack designed for high-concu
  │  └──────┬──────────────────────┘  │ ───────────────────────────→│                   │  │
  │         │                         │   2. 402 + Payment Reqs     │                   │  │
  │  ┌──────┴──────────────────────┐  │ ←───────────────────────────│                   │  │
- │  │     HTTP Client (x402)      │  │   3. GET + x-payment header │                   │  │
+ │  │      HTTP Client (x402)      │  │   3. GET + x-payment header │                   │  │
  │  └──────┬──────────────────────┘  │ ───────────────────────────→│   ┌─────────────┐ │  │
  │         │                         │                             │──→│ Facilitator │ │  │
  │         │        ┌────────────────┴─────────────────────────┐   │←──│ (x402.org)  │ │  │
  │         │        │               ON-CHAIN                   │   │   └─────────────┘ │  │
  │         │        │                                          │   │                   │  │
- │         │        │    USDC Contract (Base Sepolia)          │   │ 4. Compute Signal │  │
+ │         │        │    USDC Contract (Arc Network)           │   │ 4. Compute Signal │  │
  │         │        │    verify & transferWithAuthorization    │   │   (yfinance data) │  │
  │         │        └──────────────────────────────────────────┘   │                   │  │
  │         │                                                       │ 5. 200 + Response │  │
@@ -121,6 +121,8 @@ cd QuantMesh
 pip install eth-account python-dotenv google-generativeai
 python scripts/seed_wallets.py
 ```
+
+> **Hackathon Note:** To comply with the "Agentic Economy on Arc" requirements, transactions should be executed via the **Circle Developer Console**. Make sure to auto-fund your generated consumer wallet with Arc Testnet USDC using your Circle API key.
 
 ### 2. Configure Gemini AI (Optional)
 To enable the AI reasoning layer, add your API key to `.env`:

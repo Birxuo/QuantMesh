@@ -52,6 +52,7 @@ FACILITATOR_URL = os.getenv("FACILITATOR_URL", "https://x402.org/facilitator")
 PROVIDER_ADDRESS = get_provider_address()
 PROVIDER_PORT = int(os.getenv("PROVIDER_PORT", "8000"))
 BLOCK_EXPLORER_URL = os.getenv("BLOCK_EXPLORER_URL", "https://sepolia.basescan.org")
+USDC_CONTRACT_ADDRESS = os.getenv("USDC_CONTRACT_ADDRESS", "0x036CbD53842c5426634e7929541eC2318f3dCF7e")
 
 
 # ── WebSocket connection manager ────────────────────────────────
@@ -124,7 +125,7 @@ facilitator = HTTPFacilitatorClient(
     FacilitatorConfig(url=FACILITATOR_URL)
 )
 x402_server = x402ResourceServer(facilitator)
-x402_server.register(NETWORK_ID, ExactEvmServerScheme())
+x402_server.register(NETWORK_ID, ExactEvmServerScheme(usdc_address=USDC_CONTRACT_ADDRESS))
 
 
 def _pay_opt(price: str) -> list[PaymentOption]:
