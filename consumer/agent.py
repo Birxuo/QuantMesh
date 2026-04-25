@@ -70,7 +70,7 @@ async def _autofund_wallet(address: str):
         return
 
     print(f"💸 Auto-funding consumer wallet {address} via Circle Web3 Services API...")
-    url = "https://api.circle.com/v1/faucet/drips"
+    url = "https://api-sandbox.circle.com/v1/faucet/drips"
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
