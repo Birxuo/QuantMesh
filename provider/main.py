@@ -51,8 +51,7 @@ NETWORK_ID = os.getenv("NETWORK_ID", "eip155:84532")
 FACILITATOR_URL = os.getenv("FACILITATOR_URL", "https://x402.org/facilitator")
 PROVIDER_ADDRESS = get_provider_address()
 PROVIDER_PORT = int(os.getenv("PROVIDER_PORT", "8000"))
-BLOCK_EXPLORER_URL = os.getenv("BLOCK_EXPLORER_URL", "https://testnet.arcscan.app")
-USDC_CONTRACT_ADDRESS = os.getenv("USDC_CONTRACT_ADDRESS", "0x3600000000000000000000000000000000000000")
+BLOCK_EXPLORER_URL = os.getenv("BLOCK_EXPLORER_URL", "https://sepolia.basescan.org")
 
 
 # ── WebSocket connection manager ────────────────────────────────
@@ -125,7 +124,7 @@ facilitator = HTTPFacilitatorClient(
     FacilitatorConfig(url=FACILITATOR_URL)
 )
 x402_server = x402ResourceServer(facilitator)
-x402_server.register(NETWORK_ID, ExactEvmServerScheme(token_address=USDC_CONTRACT_ADDRESS))
+x402_server.register(NETWORK_ID, ExactEvmServerScheme())
 
 
 def _pay_opt(price: str) -> list[PaymentOption]:
@@ -214,14 +213,8 @@ class CapturePaymentMiddleware(BaseHTTPMiddleware):
             return await call_next(request)
 
         # 2. Process paywall/verification
-        try:
-            result = await self.http_server.process_http_request(context)
-            print(f"📝 x402 Process Result: {result.type}")
-        except Exception as e:
-            import traceback
-            print(f"❌ Error in x402 process_http_request: {e}")
-            traceback.print_exc()
-            return Response(content='{"error": "Internal processor error during request processing"}', status_code=500)
+        result = await self.http_server.process_http_request(context)
+        print(f"📝 x402 Process Result: {result.type}")
 
         if result.type == "payment-verified":
             # 3. SETTLE BEFORE ENDPOINT

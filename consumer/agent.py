@@ -35,7 +35,6 @@ PROVIDER_URL = os.getenv("PROVIDER_URL", "http://localhost:8000")
 CONSUMER_PRIVATE_KEY = os.getenv("CONSUMER_PRIVATE_KEY", "")
 CYCLE_INTERVAL = 3  # seconds between cycles
 MIN_BALANCE_USDC = 0.10  # auto-pause threshold
-USDC_CONTRACT_ADDRESS = os.getenv("USDC_CONTRACT_ADDRESS", "0x3600000000000000000000000000000000000000")
 
 
 def _setup_x402_client():
@@ -48,7 +47,7 @@ def _setup_x402_client():
 
     account = Account.from_key(CONSUMER_PRIVATE_KEY)
     signer = EthAccountSigner(account)
-    register_exact_evm_client(client, signer, token_address=USDC_CONTRACT_ADDRESS)
+    register_exact_evm_client(client, signer)
 
     print(f"🔑 Consumer wallet: {account.address}")
     return client, account
@@ -70,12 +69,20 @@ async def run_agent():
 
     x402_client, account = _setup_x402_client()
     
-    if os.getenv("GEMINI_API_KEY"):
+    use_gemini = os.getenv("USE_GEMINI", "false").lower() == "true"
+    has_key = bool(os.getenv("GEMINI_API_KEY"))
+
+    if use_gemini and has_key:
         strategy = GeminiStrategy()
         print("🤖 Using Gemini AI for trade decisions")
     else:
         strategy = SimpleStrategy()
-        print("⚙️  Using rule-based strategy (no GEMINI_API_KEY)")
+        if use_gemini and not has_key:
+            print("⚙️  Using rule-based strategy (Missing GEMINI_API_KEY)")
+        elif not use_gemini and has_key:
+            print("⚙️  Using rule-based strategy (Gemini disabled by config)")
+        else:
+            print("⚙️  Using rule-based strategy (no Gemini config)")
         
     dry_run = x402_client is None
 
