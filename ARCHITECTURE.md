@@ -139,5 +139,5 @@ Due to its decentralized and distributed M2M nature, QuantMesh implements string
 ## 9. Funding and Developer Console Integration
 
 To satisfy the "Agentic Economy on Arc" hackathon requirement of executing transactions via the **Circle Developer Console**, QuantMesh relies on Developer Console API keys to autofund the Consumer Agent wallet.
-* **Autofunding**: The consumer wallet (which programmatically signs EIP-3009 authorizations) must be funded with Arc Testnet USDC. This is seamlessly handled by configuring the Circle Web3 Services API within the Developer Console.
+* **Autofunding**: The consumer wallet (which programmatically signs EIP-3009 authorizations) must be funded with Arc Testnet USDC. This is seamlessly handled by configuring the Circle Web3 Services API within the [Circle Developer Console](https://console.circle.com/home).
 * **On-Chain Settlement**: Once funded, the agent's micro-transactions are broadcast and finalized on the Arc Network, fully observable via the Developer Console dashboard or Arc block explorer.

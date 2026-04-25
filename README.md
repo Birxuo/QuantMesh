@@ -122,7 +122,7 @@ pip install eth-account python-dotenv google-generativeai
 python scripts/seed_wallets.py
 ```
 
-> **Hackathon Note:** To comply with the "Agentic Economy on Arc" requirements, transactions should be executed via the **Circle Developer Console**. Make sure to auto-fund your generated consumer wallet with Arc Testnet USDC using your Circle API key.
+> **Hackathon Note:** To comply with the "Agentic Economy on Arc" requirements, transactions must be executed via the **Circle Developer Console**. Go to [console.circle.com/home](https://console.circle.com/home) and use the Web3 Services API to auto-fund your generated consumer wallet with Arc Testnet USDC.
 
 ### 2. Configure Gemini AI (Optional)
 To enable the AI reasoning layer, add your API key to `.env`:
