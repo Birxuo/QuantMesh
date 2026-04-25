@@ -2,7 +2,7 @@
 
 ## 1. System Overview
 
-QuantMesh is a high-frequency, pay-per-query financial data marketplace designed for autonomous AI agents. It completely decouples financial data consumption from traditional subscription models, utilizing the x402 payment standard to facilitate real-time, API-level micropayments. By leveraging EIP-3009 (`transferWithAuthorization`) and Arc's sub-cent network economics via Base Sepolia, QuantMesh solves the fundamental infrastructure problem of M2M (Machine-to-Machine) commerce: the incompatibility of L1 gas costs with sub-cent commercial transactions. QuantMesh makes it economically viable to price distinct market signals at highly granular levels (e.g., $0.001 to $0.005), realizing net margins of ~99.5%.
+QuantMesh is a high-frequency, pay-per-query financial data marketplace designed for autonomous AI agents. It completely decouples financial data consumption from traditional subscription models, utilizing the x402 payment standard to facilitate real-time, API-level micropayments. By leveraging EIP-3009 (`transferWithAuthorization`) and the Arc Network's sub-cent network economics, QuantMesh solves the fundamental infrastructure problem of M2M (Machine-to-Machine) commerce: the incompatibility of L1 gas costs with sub-cent commercial transactions. QuantMesh makes it economically viable to price distinct market signals at highly granular levels (e.g., $0.001 to $0.005), realizing net margins of ~99.5%.
 
 ## 2. Architecture Diagram (ASCII)
 
@@ -27,7 +27,7 @@ QuantMesh is a high-frequency, pay-per-query financial data marketplace designed
  │         │        ┌────────────────┴─────────────────────────┐   │←──│ (x402.org)  │ │  │
  │         │        │               ON-CHAIN                   │   │   └─────────────┘ │  │
  │         │        │                                          │   │                   │  │
- │         │        │    USDC Contract (Base Sepolia)          │   │ 4. Compute Signal │  │
+ │         │        │    USDC Contract (Arc Network)             │   │ 4. Compute Signal │  │
  │         │        │    verify & transferWithAuthorization    │   │   (yfinance data) │  │
  │         │        └──────────────────────────────────────────┘   │                   │  │
  │         │                                                       │ 5. 200 + Response │  │
@@ -54,7 +54,7 @@ QuantMesh is a high-frequency, pay-per-query financial data marketplace designed
 The following describes the exact transaction settlement protocol sequence utilizing EIP-3009:
 1. **Initial Request**: The Consumer Agent issues an HTTP GET to a protected endpoint (e.g., `/signals/momentum/BTC-USD`).
 2. **Rejection & Challenge**: The Provider's `PaymentMiddlewareASGI` detects the missing `PAYMENT-SIGNATURE` header. It aborts the request, returning an `HTTP 402 Payment Required` payload exposing the demanded price and recipient (`payTo` address).
-3. **EIP-3009 Framing**: The Consumer Agent derives the required payment option. It constructs an EIP-712 domain separator bound to the USDC token contract on Base Sepolia (`eip155:84532`).
+3. **EIP-3009 Framing**: The Consumer Agent derives the required payment option. It constructs an EIP-712 domain separator bound to the USDC token contract on Arc Network (`eip155:5042002`).
 4. **Offline Signing**: The Consumer explicitly constructs the `TransferWithAuthorization` typed data structure (including a highly entropic 32-byte nonce, the agreed amount, and `validBefore` expiry window setup 300 seconds forward) and signs it offline using `eth_account.sign_typed_data`.
 5. **Request Retry**: The Consumer retries the original HTTP GET request, now attaching the constructed x402 payload bearing the EIP-3009 signature within the `PAYMENT-SIGNATURE` header.
 6. **Provider Verification**: The Provider `PaymentMiddlewareASGI` traps the request, proxying the signature to the facilitator (`x402.org`).
@@ -99,9 +99,9 @@ The consumer agent deploys an autonomous stochastic loop operating cyclically ev
 
 Sub-cent transaction architecture depends rigidly on ultra-low L2 block baselines. The QuantMesh sub-cent profitability thesis is fundamentally impossible strictly isolated on Ethereum Mainnet.
 
-| Metric              | Arc/Base Sepolia  | Ethereum Mainnet |
-| ------------------- | ----------------- | ---------------- |
-| Gas per tx          | ~$0.000000336     | ~$1.50           |
+| Metric              | Arc Network (Testnet) | Ethereum Mainnet |
+| ------------------- | --------------------- | ---------------- |
+| Gas per tx          | ~$0.000000336         | ~$1.50           |
 | Revenue per tx      | $0.001–$0.005     | $0.001–$0.005    |
 | Net margin          | ~99.5%            | -69,130%         |
 | 172 tx gas cost     | $0.000058         | $258.00          |

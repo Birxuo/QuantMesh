@@ -28,7 +28,7 @@ from x402.mechanisms.evm.exact.register import register_exact_evm_client
 
 import httpx
 
-from consumer.strategy import SimpleStrategy
+from consumer.strategy import SimpleStrategy, GeminiStrategy
 
 # ── Configuration ───────────────────────────────────────────────
 PROVIDER_URL = os.getenv("PROVIDER_URL", "http://localhost:8000")
@@ -68,7 +68,14 @@ async def run_agent():
     print("=" * 60)
 
     x402_client, account = _setup_x402_client()
-    strategy = SimpleStrategy()
+    
+    if os.getenv("GEMINI_API_KEY"):
+        strategy = GeminiStrategy()
+        print("🤖 Using Gemini AI for trade decisions")
+    else:
+        strategy = SimpleStrategy()
+        print("⚙️  Using rule-based strategy (no GEMINI_API_KEY)")
+        
     dry_run = x402_client is None
 
     # Plain HTTP client for free endpoints + agent events
@@ -163,12 +170,17 @@ async def run_agent():
                 action_emoji = {"BUY": "🟢", "SELL": "🔴", "HOLD": "⚪"}.get(
                     decision["action"], "❓"
                 )
+                
+                # Check if it was a Gemini decision
+                is_gemini = "[GEMINI]" in decision["reasoning"]
+                brain_emoji = "🧠 " if is_gemini else ""
+                
                 print(
-                    f"  {action_emoji} Decision: {decision['action']} "
+                    f"  {brain_emoji}{action_emoji} Decision: {decision['action']} "
                     f"(confidence: {decision['confidence']:.1%})"
                 )
-                print(f"     📝 {decision['reasoning'][:80]}")
-                print(f"     💼 Paper P&L: ${decision['portfolio_pnl']:.2f}")
+                print(f"     📝 {decision['reasoning']}")
+                print(f"     💼 Mock P&L: ${decision['portfolio_pnl']:.2f}")
 
                 # Push to dashboard
                 status = strategy.get_status()

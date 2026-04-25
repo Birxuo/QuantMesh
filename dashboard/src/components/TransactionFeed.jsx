@@ -2,7 +2,7 @@
 
 import { ListTree, Hash, ExternalLink, Clock, ArrowUpRight } from 'lucide-react';
 
-const BLOCK_EXPLORER = 'https://sepolia.basescan.org';
+const BLOCK_EXPLORER = 'https://testnet.arcscan.app';
 
 function formatTxHash(hash) {
   if (!hash) return '—';

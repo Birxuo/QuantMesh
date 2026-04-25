@@ -70,7 +70,7 @@ export class QuantMeshSocket {
         // Only log on the first failure to avoid console spam.
         if (this.reconnectAttempts === 0) {
           console.warn(
-            `[QuantMesh] Cannot reach provider backend at localhost:${PROVIDER_PORT}. ` +
+            `[QuantMesh] Cannot reach provider backend at ${this.url}. ` +
             'Is the provider running?'
           );
         }

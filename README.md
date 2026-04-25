@@ -4,7 +4,7 @@
 
 **Institutional-grade financial data marketplace for the Machine Economy.**
 
-QuantMesh enables autonomous AI agents to buy and sell quantitative trading signals—momentum, volatility, sentiment, and microstructure noise—using real-time USDC nanopayments settled on-chain via the **x402 protocol** on **Arc**.
+QuantMesh enables autonomous AI agents to buy and sell quantitative trading signals—momentum, volatility, sentiment, and microstructure noise—using real-time USDC nanopayments settled on-chain via the **x402 protocol** on the **Arc Network**.
 
 > [!IMPORTANT]
 > **Built for the Agentic Economy on Arc Hackathon 2026.**
@@ -33,7 +33,8 @@ QuantMesh implements a three-tier agentic commerce stack designed for high-concu
 ### Core Components
 1.  **Provider (FastAPI + x402):** Serves quantitative signal endpoints behind a standard-compliant HTTP 402 payment wall.
 2.  **Consumer Agent (Python Asyncio):** A fully autonomous trading script. Each 3-second cycle, it analyzes market needs, signs EIP-3009 USDC authorizations, and executes sub-cent purchases.
-3.  **Real-time Dashboard (Next.js + Tailwind):** Professional observability suite streaming settlements, confidence scores, and economic multipliers via WebSockets.
+3.  **Gemini AI Reasoning Layer:** The consumer agent utilizes **Gemini 2.0 Flash** to reason about purchased signals, generating intelligent trade justifications instead of relying on hardcoded rules.
+4.  **Real-time Dashboard (Next.js + Tailwind):** Professional observability suite streaming settlements, confidence scores, and economic multipliers via WebSockets.
 
 ---
 
@@ -54,15 +55,19 @@ Traditional blockchain payments make sub-cent data pricing mathematically imposs
 
 ## 🔬 Signal Catalog (The Marketplace)
 
-QuantMesh provides institutional-grade signals via a pay-per-query model:
+QuantMesh provides a comprehensive catalog of institutional-grade signals via a pay-per-query model. All endpoints are protected by the x402 payment protocol.
 
 | Signal Type | Endpoint | Price (USDC) | Quantitative Objective |
 |:---|:---|:---|:---|
 | **Momentum** | `/signals/momentum` | $0.002 | Trend-following via 14-day Rate of Change (ROC). |
 | **Volatility** | `/signals/volatility` | $0.003 | Risk assessment via 20-day realized volatility. |
+| **Sentiment** | `/signals/sentiment` | $0.001 | Institutional sentiment scoring via headline metadata. |
 | **OFI** | `/signals/ofi` | $0.005 | Order Flow Imbalance — identifying buyer aggression. |
+| **Arb Spread** | `/signals/arb-spread` | $0.005 | Normalized arbitrage spread between cross-pairs. |
 | **RV-IV Spread**| `/signals/rv-iv-spread` | $0.006 | Volatility arbitrage via Implied vs Realized spreads. |
+| **Cross-Momentum**| `/signals/cross-momentum`| $0.007 | Vol-adjusted cross-sectional momentum factor. |
 | **MNR** | `/signals/mnr` | $0.005 | Microstructure Noise — variance ratio filtering. |
+| **LAR** | `/signals/lar` | $0.006 | Liquidity-Adjusted Return — Amihud illiquidity model. |
 
 ---
 
@@ -72,12 +77,17 @@ QuantMesh provides institutional-grade signals via a pay-per-query model:
 ```bash
 git clone https://github.com/Birxuo/QuantMesh.git
 cd QuantMesh
-pip install eth-account python-dotenv
+pip install eth-account python-dotenv google-generativeai
 python scripts/seed_wallets.py
 ```
-This generates your `.env` file with unique provider and consumer wallets on the Arc testnet.
 
-### 2. Run the Engine
+### 2. Configure Gemini AI (Optional)
+To enable the AI reasoning layer, add your API key to `.env`:
+```bash
+GEMINI_API_KEY=your_key_from_aistudio.google.com
+```
+
+### 3. Run the Engine
 ```bash
 # Terminal 1: Provider
 python -m provider.main
@@ -89,18 +99,13 @@ cd dashboard && npm install && npm run dev
 python -m consumer.agent
 ```
 
-### 3. Stress Test (Verification)
-To verify our throughput benchmarks locally, run:
-```bash
-python scripts/stress_test.py
-```
-
 ---
 
 ## 🛠️ Technology Stack
 *   **x402 Protocol** — Machines paying machines via HTTP 402.
+*   **Gemini 2.0 Flash** — Autonomous reasoning and signal analysis.
 *   **Circle USDC** — Institutional stablecoin for sub-cent settlement.
-*   **Arc (Base Sepolia)** — Low-latency L1 with native USDC gas tokens.
+*   **Arc Network** — High-performance L1 with native USDC gas tokens.
 *   **FastAPI** — High-performance Python backend.
 *   **Next.js / Recharts** — Professional-grade financial visualization.
 
