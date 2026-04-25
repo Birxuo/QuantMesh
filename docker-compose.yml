@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  provider:
+    build:
+      context: .
+      dockerfile: provider/Dockerfile
+    ports:
+      - "${PROVIDER_PORT:-8000}:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./provider:/app/provider
+    command: python -m uvicorn provider.main:app --host 0.0.0.0 --port 8000 --reload
+
+  consumer:
+    build:
+      context: .
+      dockerfile: consumer/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - provider
+    environment:
+      - PROVIDER_URL=http://provider:8000
+    volumes:
+      - ./consumer:/app/consumer
+    command: python -m consumer.agent
+
+  dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    ports:
+      - "${DASHBOARD_PORT:-5173}:5173"
+    depends_on:
+      - provider
+    volumes:
+      - ./dashboard/src:/app/src
+    command: npm run dev -- --host 0.0.0.0

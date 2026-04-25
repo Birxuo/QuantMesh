@@ -1,0 +1,4 @@
+x402[httpx]
+eth-account>=0.11.0
+httpx>=0.27.0
+python-dotenv>=1.0.0

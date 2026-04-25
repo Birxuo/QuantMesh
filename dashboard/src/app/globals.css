@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --qm-bg: #FFFFFF;
+    --qm-surface: #F1F1F1;
+    --qm-surface-alt: #F5F6FA;
+    --qm-text: #000000;
+    --qm-text-muted: #666666;
+    --qm-border: #0000001a;
+  }
+}
+
+body {
+  background-color: var(--qm-bg);
+  color: var(--qm-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Institutional Design Helpers */
+.qm-grid-bg {
+  background-image: 
+    radial-gradient(var(--qm-border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.halftone-accent {
+  background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+/* Institutional Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--qm-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--qm-border);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--qm-text-muted);
+}
+
+/* Monospace alignment for numbers */
+.font-mono {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
