@@ -28,7 +28,48 @@ QuantMesh enables autonomous AI agents to buy and sell quantitative trading sign
 
 QuantMesh implements a three-tier agentic commerce stack designed for high-concurrency machine-to-machine transactions.
 
-![QuantMesh Architecture](quantmesh_architecture.svg)
+```text
+ ┌───────────────────────────────────┐               ┌─────────────────────────────────────┐
+ │       CONSUMER ENVIRONMENT        │               │       PROVIDER ENVIRONMENT          │
+ │                                   │               │                                     │
+ │  ┌─────────────────────────────┐  │               │  ┌───────────────────────────────┐  │
+ │  │      Consumer Agent         │  │               │  │    Provider FastAPI Server    │  │
+ │  │      (Autonomous Loop)      │  │               │  │                               │  │
+ │  └──────┬──────────────────────┘  │               │  │   ┌───────────────────────┐   │  │
+ │         │ Strategy Engine         │               │  │   │ x402 Middleware       │   │  │
+ │  ┌──────┴──────────────────────┐  │               │  │   │ PaymentMiddlewareASGI │   │  │
+ │  │      EIP-3009 Signer        │  │               │  │   └──────┬────────────────┘   │  │
+ │  │  (eth_account typed data)   │  │   1. GET /signals/momentum  │                   │  │
+ │  └──────┬──────────────────────┘  │ ───────────────────────────→│                   │  │
+ │         │                         │   2. 402 + Payment Reqs     │                   │  │
+ │  ┌──────┴──────────────────────┐  │ ←───────────────────────────│                   │  │
+ │  │     HTTP Client (x402)      │  │   3. GET + x-payment header │                   │  │
+ │  └──────┬──────────────────────┘  │ ───────────────────────────→│   ┌─────────────┐ │  │
+ │         │                         │                             │──→│ Facilitator │ │  │
+ │         │        ┌────────────────┴─────────────────────────┐   │←──│ (x402.org)  │ │  │
+ │         │        │               ON-CHAIN                   │   │   └─────────────┘ │  │
+ │         │        │                                          │   │                   │  │
+ │         │        │    USDC Contract (Base Sepolia)          │   │ 4. Compute Signal │  │
+ │         │        │    verify & transferWithAuthorization    │   │   (yfinance data) │  │
+ │         │        └──────────────────────────────────────────┘   │                   │  │
+ │         │                                                       │ 5. 200 + Response │  │
+ │         │             6. 200 OK + payload + PAYMENT-RESPONSE    │                   │  │
+ │         └───────────────────────────────────────────────────────│                   │  │
+ │                                                                 │   ┌───────────────┤  │
+ └───────────────────────────────────┘                             │   │ SQLite DB     │  │
+                                                                   │   │ (Tx Log)      │  │
+                                                                   │   └───────────────┤  │
+                                                                   │   ┌───────────────┤  │
+                                                                   │   │ WebSocket     │  │
+                                                                   │   │ Broadcaster   │  │
+                                                                   └───┴───────┬───────┘  │
+                                                                               │          │
+                                                                   7. Broadcast│          │
+                                                                               ▼          │
+                                                                   ┌──────────────────────┤
+                                                                   │      Dashboard       │
+                                                                   └──────────────────────┘
+```
 
 ### Core Components
 1.  **Provider (FastAPI + x402):** Serves quantitative signal endpoints behind a standard-compliant HTTP 402 payment wall.
