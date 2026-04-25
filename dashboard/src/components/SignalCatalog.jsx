@@ -174,7 +174,7 @@ export default function SignalCatalog({ transactions }) {
       {/* Legend */}
       <div className="bg-qm-surface-alt px-6 py-3 border-t border-qm-border text-center shrink-0">
         <p className="text-[9px] text-qm-text-muted italic">
-          All endpoints are settled in real-time via x402 PPQ standard on Arc Sepolia.
+          All endpoints are settled in real-time via x402 PPQ standard on Arc Network.
         </p>
       </div>
     </div>

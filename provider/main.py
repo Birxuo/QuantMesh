@@ -47,12 +47,11 @@ from provider.db import init_db, log_transaction, get_all_transactions, get_stat
 from provider.wallet import get_provider_address
 
 # ── Configuration ───────────────────────────────────────────────
-NETWORK_ID = os.getenv("NETWORK_ID", "eip155:84532")
+NETWORK_ID = os.getenv("NETWORK_ID", "eip155:5042002")
 FACILITATOR_URL = os.getenv("FACILITATOR_URL", "https://x402.org/facilitator")
 PROVIDER_ADDRESS = get_provider_address()
 PROVIDER_PORT = int(os.getenv("PROVIDER_PORT", "8000"))
-BLOCK_EXPLORER_URL = os.getenv("BLOCK_EXPLORER_URL", "https://sepolia.basescan.org")
-USDC_CONTRACT_ADDRESS = os.getenv("USDC_CONTRACT_ADDRESS", "0x036CbD53842c5426634e7929541eC2318f3dCF7e")
+BLOCK_EXPLORER_URL = os.getenv("BLOCK_EXPLORER_URL", "https://testnet.arcscan.app")
 
 
 # ── WebSocket connection manager ────────────────────────────────
@@ -254,6 +253,7 @@ class CapturePaymentMiddleware(BaseHTTPMiddleware):
         try:
             if result.type == "payment-error":
                 resp = result.response
+                print(f"❌ x402 Facilitator Error Body: {resp.body}")
                 return Response(
                     content=str(resp.body) if not resp.is_html else resp.body,
                     status_code=resp.status,

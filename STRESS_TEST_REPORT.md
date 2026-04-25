@@ -44,7 +44,7 @@
 
 ## Economic Validation
 
-| Metric | Arc (Base Sepolia) | Ethereum L1 |
+| Metric | Arc (Arc Testnet) | Ethereum L1 |
 |---|---|---|
 | Gas per transaction | $0.00001 | $1.50 |
 | Total gas (5,000 tx) | $0.050000 | $7,500.00 |

@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { History, ExternalLink, Hash, Download, Search, Filter, RefreshCw } from 'lucide-react';
 import { fetchTransactions } from '../lib/api';
 
-const BLOCK_EXPLORER = 'https://sepolia.basescan.org';
+const BLOCK_EXPLORER = 'https://testnet.arcscan.app';
 
 function formatTxHash(hash) {
   if (!hash) return '—';

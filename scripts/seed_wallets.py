@@ -1,7 +1,7 @@
 """
 QuantMesh — Wallet Seeder.
 Generates two EOA keypairs (provider + consumer) and writes them to .env.
-After running, fund both addresses on the Base Sepolia faucet.
+After running, fund both addresses on the Arc Network testnet faucet.
 """
 
 import os
@@ -86,10 +86,8 @@ def main():
     print()
     print("  Next steps:")
     print("  ─────────────────────────────────────────────────")
-    print(f"  1. Fund the CONSUMER wallet with Arc Testnet USDC:")
-    print(f"     → Go to the Circle Developer Console: https://console.circle.com/home")
-    print(f"     → Use the Web3 Services API to auto-fund your wallet")
-    print(f"     → Or use https://faucet.circle.com/ (select 'Arc Testnet')")
+    print(f"  1. Fund the CONSUMER wallet with testnet USDC:")
+    print(f"     → https://faucet.circle.com/  (select 'Arc Testnet')")
     print(f"     → Paste address: {consumer_addr}")
     print(f"")
     print(f"  2. Optionally fund the PROVIDER wallet too:")

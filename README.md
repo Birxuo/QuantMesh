@@ -4,7 +4,7 @@
 
 **Institutional-grade financial data marketplace for the Machine Economy.**
 
-QuantMesh enables autonomous AI agents to buy and sell quantitative trading signals—momentum, volatility, sentiment, and microstructure noise—using real-time USDC nanopayments settled on-chain via the **x402 protocol** on the **Arc Network**.
+QuantMesh enables autonomous AI agents to buy and sell quantitative trading signals—momentum, volatility, sentiment, and microstructure noise—using real-time USDC nanopayments settled on-chain via the **x402 protocol** on **Arc**.
 
 > [!IMPORTANT]
 > **Built for the Agentic Economy on Arc Hackathon 2026.**
@@ -28,54 +28,12 @@ QuantMesh enables autonomous AI agents to buy and sell quantitative trading sign
 
 QuantMesh implements a three-tier agentic commerce stack designed for high-concurrency machine-to-machine transactions.
 
-```text
- ┌───────────────────────────────────┐               ┌─────────────────────────────────────┐
- │       CONSUMER ENVIRONMENT        │               │       PROVIDER ENVIRONMENT          │
- │                                   │               │                                     │
- │  ┌─────────────────────────────┐  │               │  ┌───────────────────────────────┐  │
- │  │      Consumer Agent         │  │               │  │    Provider FastAPI Server    │  │
- │  │      (Autonomous Loop)      │  │               │  │                               │  │
- │  └──────┬──────────────────────┘  │               │  │   ┌───────────────────────┐   │  │
- │         │ Strategy Engine         │               │  │   │ x402 Middleware       │   │  │
- │  ┌──────┴──────────────────────┐  │               │  │   │ PaymentMiddlewareASGI │   │  │
- │  │      EIP-3009 Signer        │  │               │  │   └──────┬────────────────┘   │  │
- │  │  (eth_account typed data)   │  │   1. GET /signals/momentum  │                   │  │
- │  └──────┬──────────────────────┘  │ ───────────────────────────→│                   │  │
- │         │                         │   2. 402 + Payment Reqs     │                   │  │
- │  ┌──────┴──────────────────────┐  │ ←───────────────────────────│                   │  │
- │  │      HTTP Client (x402)      │  │   3. GET + x-payment header │                   │  │
- │  └──────┬──────────────────────┘  │ ───────────────────────────→│   ┌─────────────┐ │  │
- │         │                         │                             │──→│ Facilitator │ │  │
- │         │        ┌────────────────┴─────────────────────────┐   │←──│ (x402.org)  │ │  │
- │         │        │               ON-CHAIN                   │   │   └─────────────┘ │  │
- │         │        │                                          │   │                   │  │
- │         │        │    USDC Contract (Arc Network)           │   │ 4. Compute Signal │  │
- │         │        │    verify & transferWithAuthorization    │   │   (yfinance data) │  │
- │         │        └──────────────────────────────────────────┘   │                   │  │
- │         │                                                       │ 5. 200 + Response │  │
- │         │             6. 200 OK + payload + PAYMENT-RESPONSE    │                   │  │
- │         └───────────────────────────────────────────────────────│                   │  │
- │                                                                 │   ┌───────────────┤  │
- └───────────────────────────────────┘                             │   │ SQLite DB     │  │
-                                                                   │   │ (Tx Log)      │  │
-                                                                   │   └───────────────┤  │
-                                                                   │   ┌───────────────┤  │
-                                                                   │   │ WebSocket     │  │
-                                                                   │   │ Broadcaster   │  │
-                                                                   └───┴───────┬───────┘  │
-                                                                               │          │
-                                                                   7. Broadcast│          │
-                                                                               ▼          │
-                                                                   ┌──────────────────────┤
-                                                                   │      Dashboard       │
-                                                                   └──────────────────────┘
-```
+![QuantMesh Architecture](quantmesh_architecture.svg)
 
 ### Core Components
 1.  **Provider (FastAPI + x402):** Serves quantitative signal endpoints behind a standard-compliant HTTP 402 payment wall.
 2.  **Consumer Agent (Python Asyncio):** A fully autonomous trading script. Each 3-second cycle, it analyzes market needs, signs EIP-3009 USDC authorizations, and executes sub-cent purchases.
-3.  **Gemini AI Reasoning Layer (Optional):** The consumer agent can utilize **Gemini 2.0 Flash** to reason about purchased signals, generating intelligent trade justifications. This is disabled by default and can be toggled via environment variables.
-4.  **Real-time Dashboard (Next.js + Tailwind):** Professional observability suite streaming settlements, confidence scores, and economic multipliers via WebSockets.
+3.  **Real-time Dashboard (Next.js + Tailwind):** Professional observability suite streaming settlements, confidence scores, and economic multipliers via WebSockets.
 
 ---
 
@@ -96,19 +54,15 @@ Traditional blockchain payments make sub-cent data pricing mathematically imposs
 
 ## 🔬 Signal Catalog (The Marketplace)
 
-QuantMesh provides a comprehensive catalog of institutional-grade signals via a pay-per-query model. All endpoints are protected by the x402 payment protocol.
+QuantMesh provides institutional-grade signals via a pay-per-query model:
 
 | Signal Type | Endpoint | Price (USDC) | Quantitative Objective |
 |:---|:---|:---|:---|
 | **Momentum** | `/signals/momentum` | $0.002 | Trend-following via 14-day Rate of Change (ROC). |
 | **Volatility** | `/signals/volatility` | $0.003 | Risk assessment via 20-day realized volatility. |
-| **Sentiment** | `/signals/sentiment` | $0.001 | Institutional sentiment scoring via headline metadata. |
 | **OFI** | `/signals/ofi` | $0.005 | Order Flow Imbalance — identifying buyer aggression. |
-| **Arb Spread** | `/signals/arb-spread` | $0.005 | Normalized arbitrage spread between cross-pairs. |
 | **RV-IV Spread**| `/signals/rv-iv-spread` | $0.006 | Volatility arbitrage via Implied vs Realized spreads. |
-| **Cross-Momentum**| `/signals/cross-momentum`| $0.007 | Vol-adjusted cross-sectional momentum factor. |
 | **MNR** | `/signals/mnr` | $0.005 | Microstructure Noise — variance ratio filtering. |
-| **LAR** | `/signals/lar` | $0.006 | Liquidity-Adjusted Return — Amihud illiquidity model. |
 
 ---
 
@@ -118,19 +72,12 @@ QuantMesh provides a comprehensive catalog of institutional-grade signals via a 
 ```bash
 git clone https://github.com/Birxuo/QuantMesh.git
 cd QuantMesh
-pip install eth-account python-dotenv google-generativeai
+pip install eth-account python-dotenv
 python scripts/seed_wallets.py
 ```
+This generates your `.env` file with unique provider and consumer wallets on the Arc testnet.
 
-> **Hackathon Note:** To comply with the "Agentic Economy on Arc" requirements, transactions must be executed via the **Circle Developer Console**. Go to [console.circle.com/home](https://console.circle.com/home) and use the Web3 Services API to auto-fund your generated consumer wallet with Arc Testnet USDC.
-
-### 2. Configure Gemini AI (Optional)
-To enable the AI reasoning layer, add your API key to `.env`:
-```bash
-GEMINI_API_KEY=your_key_from_aistudio.google.com
-```
-
-### 3. Run the Engine
+### 2. Run the Engine
 ```bash
 # Terminal 1: Provider
 python -m provider.main
@@ -142,13 +89,18 @@ cd dashboard && npm install && npm run dev
 python -m consumer.agent
 ```
 
+### 3. Stress Test (Verification)
+To verify our throughput benchmarks locally, run:
+```bash
+python scripts/stress_test.py
+```
+
 ---
 
 ## 🛠️ Technology Stack
 *   **x402 Protocol** — Machines paying machines via HTTP 402.
-*   **Gemini 2.0 Flash** — Autonomous reasoning and signal analysis.
 *   **Circle USDC** — Institutional stablecoin for sub-cent settlement.
-*   **Arc Network** — High-performance L1 with native USDC gas tokens.
+*   **Arc Network** — Low-latency L1 with native USDC gas tokens.
 *   **FastAPI** — High-performance Python backend.
 *   **Next.js / Recharts** — Professional-grade financial visualization.
 

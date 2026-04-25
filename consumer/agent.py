@@ -28,14 +28,13 @@ from x402.mechanisms.evm.exact.register import register_exact_evm_client
 
 import httpx
 
-from consumer.strategy import SimpleStrategy, GeminiStrategy
+from consumer.strategy import SimpleStrategy
 
 # ── Configuration ───────────────────────────────────────────────
 PROVIDER_URL = os.getenv("PROVIDER_URL", "http://localhost:8000")
 CONSUMER_PRIVATE_KEY = os.getenv("CONSUMER_PRIVATE_KEY", "")
 CYCLE_INTERVAL = 3  # seconds between cycles
 MIN_BALANCE_USDC = 0.10  # auto-pause threshold
-USDC_CONTRACT_ADDRESS = os.getenv("USDC_CONTRACT_ADDRESS", "0x036CbD53842c5426634e7929541eC2318f3dCF7e")
 
 
 def _setup_x402_client():
@@ -62,34 +61,6 @@ async def _push_agent_event(plain_http: httpx.AsyncClient, event: dict):
         pass  # Non-critical — dashboard update
 
 
-async def _autofund_wallet(address: str):
-    """Automatically fund the wallet using Circle Developer Console API."""
-    api_key = os.getenv("CIRCLE_API_KEY")
-    if not api_key or api_key.startswith("your_circle"):
-        print("⚠️  No CIRCLE_API_KEY found in .env. Skipping auto-fund.")
-        return
-
-    print(f"💸 Auto-funding consumer wallet {address} via Circle Web3 Services API...")
-    url = "https://api-sandbox.circle.com/v1/faucet/drips"
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
-    }
-    payload = {
-        "address": address,
-        "blockchain": "ARC-TESTNET"
-    }
-    try:
-        async with httpx.AsyncClient() as client:
-            resp = await client.post(url, headers=headers, json=payload, timeout=10.0)
-            if resp.status_code in [200, 201]:
-                print("  ✅ Auto-funded successfully.")
-            else:
-                print(f"  ⚠️  Auto-fund returned {resp.status_code}: {resp.text}")
-    except Exception as e:
-        print(f"  ⚠️  Auto-fund failed: {e}")
-
-
 async def run_agent():
     """Main autonomous agent loop."""
     print("=" * 60)
@@ -97,24 +68,7 @@ async def run_agent():
     print("=" * 60)
 
     x402_client, account = _setup_x402_client()
-    if account:
-        await _autofund_wallet(account.address)
-    
-    use_gemini = os.getenv("USE_GEMINI", "false").lower() == "true"
-    has_key = bool(os.getenv("GEMINI_API_KEY"))
-
-    if use_gemini and has_key:
-        strategy = GeminiStrategy()
-        print("🤖 Using Gemini AI for trade decisions")
-    else:
-        strategy = SimpleStrategy()
-        if use_gemini and not has_key:
-            print("⚙️  Using rule-based strategy (Missing GEMINI_API_KEY)")
-        elif not use_gemini and has_key:
-            print("⚙️  Using rule-based strategy (Gemini disabled by config)")
-        else:
-            print("⚙️  Using rule-based strategy (no Gemini config)")
-        
+    strategy = SimpleStrategy()
     dry_run = x402_client is None
 
     # Plain HTTP client for free endpoints + agent events
@@ -209,17 +163,12 @@ async def run_agent():
                 action_emoji = {"BUY": "🟢", "SELL": "🔴", "HOLD": "⚪"}.get(
                     decision["action"], "❓"
                 )
-                
-                # Check if it was a Gemini decision
-                is_gemini = "[GEMINI]" in decision["reasoning"]
-                brain_emoji = "🧠 " if is_gemini else ""
-                
                 print(
-                    f"  {brain_emoji}{action_emoji} Decision: {decision['action']} "
+                    f"  {action_emoji} Decision: {decision['action']} "
                     f"(confidence: {decision['confidence']:.1%})"
                 )
-                print(f"     📝 {decision['reasoning']}")
-                print(f"     💼 Mock P&L: ${decision['portfolio_pnl']:.2f}")
+                print(f"     📝 {decision['reasoning'][:80]}")
+                print(f"     💼 Paper P&L: ${decision['portfolio_pnl']:.2f}")
 
                 # Push to dashboard
                 status = strategy.get_status()
