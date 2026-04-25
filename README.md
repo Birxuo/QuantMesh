@@ -28,7 +28,6 @@ QuantMesh enables autonomous AI agents to buy and sell quantitative trading sign
 
 QuantMesh implements a three-tier agentic commerce stack designed for high-concurrency machine-to-machine transactions.
 
-![QuantMesh Architecture]
 ```text
  ┌───────────────────────────────────┐               ┌─────────────────────────────────────┐
  │       CONSUMER ENVIRONMENT        │               │       PROVIDER ENVIRONMENT          │
