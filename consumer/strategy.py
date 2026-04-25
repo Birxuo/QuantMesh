@@ -262,6 +262,10 @@ class GeminiStrategy:
         self.model = genai.GenerativeModel("gemini-2.0-flash")
         self.portfolio = PortfolioState()
         self.simple = SimpleStrategy()  # For fallback and purchasing logic
+        
+        # Attributes for compatibility with agent.py loop
+        self.signals_purchased = 0
+        self.usdc_spent = 0.0
 
     def buy_signals(self, catalog: list) -> list[dict]:
         # Keep purchasing logic from SimpleStrategy
@@ -270,6 +274,11 @@ class GeminiStrategy:
     def record_purchase(self, endpoint: str, cost: float):
         self.portfolio.signals_purchased += 1
         self.portfolio.usdc_spent = round(self.portfolio.usdc_spent + cost, 6)
+        
+        # Keep attributes in sync for agent.py
+        self.signals_purchased = self.portfolio.signals_purchased
+        self.usdc_spent = self.portfolio.usdc_spent
+        
         # Keep simple strategy in sync for fallback
         self.simple.record_purchase(endpoint, cost)
 
