@@ -62,6 +62,34 @@ async def _push_agent_event(plain_http: httpx.AsyncClient, event: dict):
         pass  # Non-critical — dashboard update
 
 
+async def _autofund_wallet(address: str):
+    """Automatically fund the wallet using Circle Developer Console API."""
+    api_key = os.getenv("CIRCLE_API_KEY")
+    if not api_key or api_key.startswith("your_circle"):
+        print("⚠️  No CIRCLE_API_KEY found in .env. Skipping auto-fund.")
+        return
+
+    print(f"💸 Auto-funding consumer wallet {address} via Circle Web3 Services API...")
+    url = "https://api.circle.com/v1/faucet/drips"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "address": address,
+        "blockchain": "ARC-TESTNET"
+    }
+    try:
+        async with httpx.AsyncClient() as client:
+            resp = await client.post(url, headers=headers, json=payload, timeout=10.0)
+            if resp.status_code in [200, 201]:
+                print("  ✅ Auto-funded successfully.")
+            else:
+                print(f"  ⚠️  Auto-fund returned {resp.status_code}: {resp.text}")
+    except Exception as e:
+        print(f"  ⚠️  Auto-fund failed: {e}")
+
+
 async def run_agent():
     """Main autonomous agent loop."""
     print("=" * 60)
@@ -69,6 +97,8 @@ async def run_agent():
     print("=" * 60)
 
     x402_client, account = _setup_x402_client()
+    if account:
+        await _autofund_wallet(account.address)
     
     use_gemini = os.getenv("USE_GEMINI", "false").lower() == "true"
     has_key = bool(os.getenv("GEMINI_API_KEY"))
