@@ -125,7 +125,7 @@ facilitator = HTTPFacilitatorClient(
     FacilitatorConfig(url=FACILITATOR_URL)
 )
 x402_server = x402ResourceServer(facilitator)
-x402_server.register(NETWORK_ID, ExactEvmServerScheme(usdc_address=USDC_CONTRACT_ADDRESS))
+x402_server.register(NETWORK_ID, ExactEvmServerScheme())
 
 
 def _pay_opt(price: str) -> list[PaymentOption]:

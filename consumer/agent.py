@@ -48,7 +48,7 @@ def _setup_x402_client():
 
     account = Account.from_key(CONSUMER_PRIVATE_KEY)
     signer = EthAccountSigner(account)
-    register_exact_evm_client(client, signer, token_address=USDC_CONTRACT_ADDRESS)
+    register_exact_evm_client(client, signer)
 
     print(f"🔑 Consumer wallet: {account.address}")
     return client, account
