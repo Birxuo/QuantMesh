@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: false, // Turned off for simpler WebSocket handling in dev
   turbopack: {
-    root: '.', // Prevent workspace root detection from scanning parent directories
+    root: './src', 
   },
   async rewrites() {
     const providerUrl = process.env.PROVIDER_URL || 'http://localhost:8000';
