@@ -213,8 +213,14 @@ class CapturePaymentMiddleware(BaseHTTPMiddleware):
             return await call_next(request)
 
         # 2. Process paywall/verification
-        result = await self.http_server.process_http_request(context)
-        print(f"📝 x402 Process Result: {result.type}")
+        try:
+            result = await self.http_server.process_http_request(context)
+            print(f"📝 x402 Process Result: {result.type}")
+        except Exception as e:
+            import traceback
+            print(f"❌ Error in x402 process_http_request: {e}")
+            traceback.print_exc()
+            return Response(content='{"error": "Internal processor error during request processing"}', status_code=500)
 
         if result.type == "payment-verified":
             # 3. SETTLE BEFORE ENDPOINT
