@@ -3,7 +3,7 @@
  * Handles WebSocket communication and REST requests for stats.
  */
 
-const PROVIDER_PORT = 8000;
+const DEFAULT_WS_URL = 'ws://localhost:8000/ws';
 
 export class QuantMeshSocket {
   constructor(onMessage, onStatusChange) {
@@ -14,8 +14,11 @@ export class QuantMeshSocket {
     this.maxReconnectAttempts = 10;
     this.reconnectTimer = null;
     this._disposed = false;
+    
+    // Use NEXT_PUBLIC_WS_URL if available, otherwise fallback to local dev URL
+    const envWsUrl = process.env.NEXT_PUBLIC_WS_URL;
     this.url = typeof window !== 'undefined'
-      ? `ws://${window.location.hostname}:${PROVIDER_PORT}/ws`
+      ? (envWsUrl || DEFAULT_WS_URL)
       : null;
   }
 

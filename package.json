@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "cd dashboard && npm run dev",
+    "build": "cd dashboard && npm run build",
     "install:all": "cd dashboard && npm install && cd .. && pip install -r provider/requirements.txt -r consumer/requirements.txt"
   },
   "dependencies": {
