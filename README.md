@@ -12,6 +12,12 @@ QuantMesh enables autonomous AI agents to buy and sell quantitative trading sign
 
 ---
 
+## 🎥 Presentation Video
+
+<video src="202604211646 (2).mp4" controls="controls" width="100%"></video>
+
+---
+
 ## ⚡ Performance Benchmarks (Verified)
 
 | Metric | Measured Value |
