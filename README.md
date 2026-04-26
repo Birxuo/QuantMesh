@@ -14,7 +14,7 @@ QuantMesh enables autonomous AI agents to buy and sell quantitative trading sign
 
 ## 🎥 Presentation Video
 
-<video src="https://storage.googleapis.com/lablab-video-submissions/cokcujybyg4odzqbqri0vgsy/raw/submission-video-x-cokcujybyg4odzqbqri0vgsy-ra8olo1i9pb1fgit72sdgn1v_dsdu49p3lzrpr8wpij0h3i5d.mp4" controls="controls" width="100%"></video>
+<video src="https://lablab.ai/ai-hackathons/nano-payments-arc/quant-mesh-crew/quantmesh" controls="controls" width="100%"></video>
 
 ---
 
