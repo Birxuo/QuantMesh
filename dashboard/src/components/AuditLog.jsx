@@ -8,7 +8,13 @@ const BLOCK_EXPLORER = 'https://testnet.arcscan.app';
 
 function formatTxHash(hash) {
   if (!hash) return '—';
-  return `${hash.slice(0, 10)}...${hash.slice(-8)}`;
+  const h = hash.startsWith('0x') ? hash : `0x${hash}`;
+  return `${h.slice(0, 10)}...${h.slice(-8)}`;
+}
+
+function normalizeTxHash(hash) {
+  if (!hash) return '';
+  return hash.startsWith('0x') ? hash : `0x${hash}`;
 }
 
 function formatWallet(wallet) {
@@ -247,7 +253,7 @@ export default function AuditLog() {
                       <td className="px-5 py-2.5">
                         {txHash ? (
                           <a
-                            href={`${BLOCK_EXPLORER}/tx/${txHash}`}
+                            href={`${BLOCK_EXPLORER}/tx/${normalizeTxHash(txHash)}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-1 text-qm-green hover:text-black transition-colors font-mono text-[10px]"

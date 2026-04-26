@@ -6,7 +6,13 @@ const BLOCK_EXPLORER = 'https://testnet.arcscan.app';
 
 function formatTxHash(hash) {
   if (!hash) return '—';
-  return `${hash.slice(0, 8)}...${hash.slice(-6)}`;
+  const h = hash.startsWith('0x') ? hash : `0x${hash}`;
+  return `${h.slice(0, 10)}...${h.slice(-6)}`;
+}
+
+function normalizeTxHash(hash) {
+  if (!hash) return '';
+  return hash.startsWith('0x') ? hash : `0x${hash}`;
 }
 
 function formatEndpoint(endpoint) {
@@ -103,7 +109,7 @@ export default function TransactionFeed({ transactions, totalCount, totalUsdc })
                     </td>
                     <td className="px-5 py-3">
                       <a
-                        href={`${BLOCK_EXPLORER}/tx/${txHash}`}
+                        href={`${BLOCK_EXPLORER}/tx/${normalizeTxHash(txHash)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-1 text-qm-green hover:text-black transition-colors"
