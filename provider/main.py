@@ -28,6 +28,11 @@ from x402.http.x402_http_server import x402HTTPResourceServer
 from x402.http.types import HTTPRequestContext, RouteConfig
 from x402.server import x402ResourceServer
 from x402.mechanisms.evm.exact import ExactEvmServerScheme
+from x402 import x402Facilitator
+from x402.mechanisms.evm.exact.facilitator import ExactEvmScheme
+from x402.mechanisms.evm.signers import FacilitatorWeb3Signer
+from x402.mechanisms.evm import constants
+from eth_account import Account
 from starlette.middleware.base import BaseHTTPMiddleware
 
 # ── Local modules ───────────────────────────────────────────────
@@ -48,10 +53,25 @@ from provider.wallet import get_provider_address
 
 # ── Configuration ───────────────────────────────────────────────
 NETWORK_ID = os.getenv("NETWORK_ID", "eip155:5042002")
-FACILITATOR_URL = os.getenv("FACILITATOR_URL", "https://x402.org/facilitator")
+RPC_URL = os.getenv("RPC_URL", "https://rpc.testnet.arc.network")
+FACILITATOR_URL = os.getenv("FACILITATOR_URL", "local")
 PROVIDER_ADDRESS = get_provider_address()
 PROVIDER_PORT = int(os.getenv("PROVIDER_PORT", "8000"))
 BLOCK_EXPLORER_URL = os.getenv("BLOCK_EXPLORER_URL", "https://testnet.arcscan.app")
+USDC_CONTRACT_ADDRESS = os.getenv("USDC_CONTRACT_ADDRESS", "0x3600000000000000000000000000000000000000")
+
+# ── x402 Configuration Monkeypatch ──────────────────────────────
+# We manually register the Arc Testnet config because it's not in the 
+# base x402 library yet.
+constants.NETWORK_CONFIGS[NETWORK_ID] = {
+    "chain_id": int(NETWORK_ID.split(":")[1]),
+    "default_asset": {
+        "address": USDC_CONTRACT_ADDRESS,
+        "name": "USDC",
+        "version": "2",
+        "decimals": 6,
+    },
+}
 
 
 # ── WebSocket connection manager ────────────────────────────────
@@ -119,10 +139,25 @@ app.add_middleware(
     expose_headers=["*"],
 )
 
-# ── x402 payment middleware ─────────────────────────────────────
-facilitator = HTTPFacilitatorClient(
-    FacilitatorConfig(url=FACILITATOR_URL)
+# ── x402 payment middleware (Sovereign Facilitator) ─────────────
+# Transitioned to sovereign model to support Arc Testnet (5042002)
+# without external facilitator dependency.
+PROVIDER_PRIVATE_KEY = os.getenv("PROVIDER_PRIVATE_KEY", "")
+if not PROVIDER_PRIVATE_KEY or "your" in PROVIDER_PRIVATE_KEY:
+    print("❌ ERROR: PROVIDER_PRIVATE_KEY not set in .env")
+    sys.exit(1)
+
+# Local verification/settlement engine
+signer = FacilitatorWeb3Signer(
+    private_key=PROVIDER_PRIVATE_KEY,
+    rpc_url=RPC_URL
 )
+facilitator = x402Facilitator()
+facilitator.register(
+    [NETWORK_ID],
+    ExactEvmScheme(signer=signer)
+)
+
 x402_server = x402ResourceServer(facilitator)
 x402_server.register(NETWORK_ID, ExactEvmServerScheme())
 
