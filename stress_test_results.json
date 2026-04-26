@@ -1,6 +1,6 @@
 {
   "test": "QuantMesh Infrastructure Stress Test v2",
-  "timestamp": "2026-04-21T16:33:18Z",
+  "timestamp": "2026-04-25T23:55:49Z",
   "config": {
     "target_transactions": 5000,
     "concurrency": 200,
@@ -10,131 +10,131 @@
   },
   "results": {
     "transactions_settled": 5000,
-    "total_usdc_revenue": 17.746,
-    "time_elapsed_seconds": 0.603,
-    "throughput_tx_per_min": 475097,
-    "settlement_frequency_tx_per_sec": 7918.3,
+    "total_usdc_revenue": 18.073,
+    "time_elapsed_seconds": 0.607,
+    "throughput_tx_per_min": 469533,
+    "settlement_frequency_tx_per_sec": 7825.5,
     "errors": 0,
     "target_achieved": true
   },
   "latency_ms": {
-    "p50": 20.828,
-    "p95": 21.829,
-    "p99": 22.159,
-    "mean": 20.52
+    "p50": 15.589,
+    "p95": 21.448,
+    "p99": 25.515,
+    "mean": 16.024
   },
   "economics": {
-    "revenue_usdc": 17.746,
+    "revenue_usdc": 18.073,
     "gas_arc_usdc": 0.05,
     "gas_eth_usdc": 7500.0,
     "efficiency_multiplier": 150000,
     "net_margin_arc_pct": 99.7,
-    "net_margin_eth_pct": -42163
+    "net_margin_eth_pct": -41398
   },
   "endpoint_breakdown": [
     {
       "endpoint": "/signals/momentum/BTC-USD",
-      "queries": 2890,
-      "revenue": 5.78
+      "queries": 4089,
+      "revenue": 8.178
     },
     {
       "endpoint": "/signals/volatility/BTC-USD",
-      "queries": 2841,
-      "revenue": 8.523
+      "queries": 4033,
+      "revenue": 12.099
     },
     {
       "endpoint": "/signals/momentum/ETH-USD",
-      "queries": 2806,
-      "revenue": 5.612
-    },
-    {
-      "endpoint": "/signals/sentiment/ETH-USD",
-      "queries": 1071,
-      "revenue": 1.071
-    },
-    {
-      "endpoint": "/signals/sentiment/AAPL",
-      "queries": 1025,
-      "revenue": 1.025
+      "queries": 3995,
+      "revenue": 7.99
     },
     {
       "endpoint": "/signals/ofi/ETH-USD",
-      "queries": 1016,
-      "revenue": 5.08
-    },
-    {
-      "endpoint": "/signals/mnr/BTC-USD",
-      "queries": 1005,
-      "revenue": 5.025
-    },
-    {
-      "endpoint": "/signals/sentiment/BTC-USD",
-      "queries": 1001,
-      "revenue": 1.001
+      "queries": 1441,
+      "revenue": 7.205
     },
     {
       "endpoint": "/signals/ofi/BTC-USD",
-      "queries": 1001,
-      "revenue": 5.005
+      "queries": 1411,
+      "revenue": 7.055
+    },
+    {
+      "endpoint": "/signals/sentiment/ETH-USD",
+      "queries": 1357,
+      "revenue": 1.357
+    },
+    {
+      "endpoint": "/signals/mnr/BTC-USD",
+      "queries": 1326,
+      "revenue": 6.63
+    },
+    {
+      "endpoint": "/signals/sentiment/AAPL",
+      "queries": 1325,
+      "revenue": 1.325
+    },
+    {
+      "endpoint": "/signals/sentiment/BTC-USD",
+      "queries": 1294,
+      "revenue": 1.294
     },
     {
       "endpoint": "/signals/lar/BTC-USD",
-      "queries": 978,
-      "revenue": 5.868
+      "queries": 1279,
+      "revenue": 7.674
     },
     {
       "endpoint": "/signals/rv-iv-spread/BTC-USD",
-      "queries": 945,
-      "revenue": 5.67
+      "queries": 1238,
+      "revenue": 7.428
     },
     {
       "endpoint": "/signals/rv-iv-spread/ETH-USD",
-      "queries": 943,
-      "revenue": 5.658
+      "queries": 1190,
+      "revenue": 7.14
     },
     {
       "endpoint": "/signals/volatility/ETH-USD",
-      "queries": 942,
-      "revenue": 2.826
+      "queries": 1173,
+      "revenue": 3.519
     },
     {
       "endpoint": "/signals/arb-spread/AAPL_MSFT",
-      "queries": 934,
-      "revenue": 4.67
-    },
-    {
-      "endpoint": "/signals/momentum/SPY",
-      "queries": 927,
-      "revenue": 1.854
-    },
-    {
-      "endpoint": "/signals/momentum/MSFT",
-      "queries": 926,
-      "revenue": 1.852
-    },
-    {
-      "endpoint": "/signals/lar/ETH-USD",
-      "queries": 907,
-      "revenue": 5.442
+      "queries": 1169,
+      "revenue": 5.845
     },
     {
       "endpoint": "/signals/momentum/AAPL",
-      "queries": 905,
-      "revenue": 1.81
-    },
-    {
-      "endpoint": "/signals/volatility/AAPL",
-      "queries": 904,
-      "revenue": 2.712
+      "queries": 1157,
+      "revenue": 2.314
     },
     {
       "endpoint": "/signals/arb-spread/BTC-USD_ETH-USD",
-      "queries": 898,
-      "revenue": 4.49
+      "queries": 1150,
+      "revenue": 5.75
+    },
+    {
+      "endpoint": "/signals/momentum/SPY",
+      "queries": 1149,
+      "revenue": 2.298
+    },
+    {
+      "endpoint": "/signals/momentum/MSFT",
+      "queries": 1149,
+      "revenue": 2.298
+    },
+    {
+      "endpoint": "/signals/lar/ETH-USD",
+      "queries": 1149,
+      "revenue": 6.894
+    },
+    {
+      "endpoint": "/signals/volatility/AAPL",
+      "queries": 1128,
+      "revenue": 3.384
     }
   ],
   "totals": {
-    "db_total_transactions": 27094,
-    "db_total_revenue_usdc": 89.409
+    "db_total_transactions": 36142,
+    "db_total_revenue_usdc": 118.955
   }
 }

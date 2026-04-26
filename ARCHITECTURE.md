@@ -21,13 +21,13 @@ QuantMesh is a high-frequency, pay-per-query financial data marketplace designed
  │  └──────┬──────────────────────┘  │ ───────────────────────────→│                   │  │
  │         │                         │   2. 402 + Payment Reqs     │                   │  │
  │  ┌──────┴──────────────────────┐  │ ←───────────────────────────│                   │  │
- │  │     HTTP Client (x402)      │  │   3. GET + x-payment header │                   │  │
+ │  │      HTTP Client (x402)      │  │   3. GET + x-payment header │                   │  │
  │  └──────┬──────────────────────┘  │ ───────────────────────────→│   ┌─────────────┐ │  │
  │         │                         │                             │──→│ Facilitator │ │  │
  │         │        ┌────────────────┴─────────────────────────┐   │←──│ (x402.org)  │ │  │
  │         │        │               ON-CHAIN                   │   │   └─────────────┘ │  │
  │         │        │                                          │   │                   │  │
- │         │        │    USDC Contract (Arc Network)             │   │ 4. Compute Signal │  │
+ │         │        │    USDC Contract (Arc Network)           │   │ 4. Compute Signal │  │
  │         │        │    verify & transferWithAuthorization    │   │   (yfinance data) │  │
  │         │        └──────────────────────────────────────────┘   │                   │  │
  │         │                                                       │ 5. 200 + Response │  │
@@ -97,9 +97,9 @@ The consumer agent deploys an autonomous stochastic loop operating cyclically ev
 
 ## 6. Economic Model
 
-Sub-cent transaction architecture depends rigidly on ultra-low L2 block baselines. The QuantMesh sub-cent profitability thesis is fundamentally impossible strictly isolated on Ethereum Mainnet.
+Sub-cent transaction architecture depends rigidly on ultra-low L2 block baselines. The QuantMesh sub-cent profitability thesis is fundamentally impossible strictly isolated on legacy L1 networks like Ethereum.
 
-| Metric              | Arc Network (Testnet) | Ethereum Mainnet |
+| Metric              | Arc Network           | Ethereum Mainnet |
 | ------------------- | --------------------- | ---------------- |
 | Gas per tx          | ~$0.000000336         | ~$1.50           |
 | Revenue per tx      | $0.001–$0.005     | $0.001–$0.005    |

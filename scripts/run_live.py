@@ -97,9 +97,9 @@ async def monitor_transactions():
                     print("  MARGIN COMPARISON")
                     print("  ─────────────────────────────────────")
                     eth_gas = 1.50  # Average ETH mainnet gas
-                    arc_gas = 0.00001  # Arc / Base gas
+                    arc_gas = 0.00001  # Arc Network gas
                     print(f"  Ethereum mainnet gas: ${eth_gas:.2f}/tx")
-                    print(f"  Arc/Base gas:         ${arc_gas:.5f}/tx")
+                    print(f"  Arc Network gas:      ${arc_gas:.5f}/tx")
                     print(f"  Gas savings per tx:   ${eth_gas - arc_gas:.5f}")
                     print(f"  Total gas on ETH:     ${eth_gas * count:.2f}")
                     print(f"  Total gas on Arc:     ${arc_gas * count:.5f}")

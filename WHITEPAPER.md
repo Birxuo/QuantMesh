@@ -4,7 +4,7 @@
 ---
 
 ## 1. Abstract
-QuantMesh is a high-frequency financial marketplace designed for the autonomous agentic economy. By leveraging the **x402 protocol** on the **Arc blockchain**, QuantMesh enables real-time, sub-cent settlement for financial signals, bypassing the cost-prohibitive gas fees of legacy networks like Ethereum. This paper presents the technical architecture and provides empirical proof of achieving 99.5% operational margins using internet-native nanopayments.
+QuantMesh is a high-frequency financial marketplace designed for the autonomous agentic economy. By leveraging the **x402 protocol** on the **Arc blockchain**, QuantMesh enables real-time, sub-cent settlement for financial signals, bypassing the cost-prohibitive gas fees of legacy networks. This paper presents the technical architecture and provides empirical proof of achieving 99.5% operational margins using internet-native nanopayments.
 
 ## 2. The Problem: The High-Frequency Barrier
 Traditional financial data delivery is centralized and subscription-based. Transitioning these marketplaces to Decentralized Finance (DeFi) has failed due to:
@@ -19,7 +19,7 @@ QuantMesh utilizes the **x402 Payment Required** standard, an internet-native pr
 Instead of relying on off-chain payment channels or slow on-chain signatures for every request, x402 enables **Header-Based Settlement**.
 1. **Request**: The Consumer Agent requests a specific signal (e.g., `/signals/momentum/BTC-USD`).
 2. **Challenge**: The Provider responds with a `402 Payment Required` header, specifying the required USDC amount and target wallet.
-3. **Settlement**: The Agent settles the transaction on the **Arc Blockchain** (Base-optimized).
+3. **Settlement**: The Agent settles the transaction on the **Arc Blockchain**.
 4. **Delivery**: The Provider verifies the on-chain settlement via the transaction hash provided in the follow-up request header and delivers the payload.
 
 ## 4. Technical Architecture
@@ -31,14 +31,14 @@ Provider nodes host high-fidelity catalogs of financial signals. Each endpoint i
 Agents are programmed to ingest signals based on custom "Alpha Logic." They manage a Circle Nanopayments wallet and perform high-frequency purchases without human intervention.
 
 ### 4.3 The Arc Edge
-Running on the Arc/Base network allows QuantMesh to achieve:
-- **Block Time**: \u003c 2 seconds.
-- **Gas Cost**: $\u003c 0.00001 per query.
+Running on the Arc network allows QuantMesh to achieve:
+- **Block Time**: < 2 seconds.
+- **Gas Cost**: $< 0.00001 per query.
 
 ## 5. Economic Validation (Proof-of-Efficiency)
 Empirical tests conducted on the QuantMesh testnet demonstrate the massive efficiency gain of the x402 model.
 
-| Metric | Ethereum (Mainnet) | QuantMesh (x402/Arc) | Delta |
+| Metric | Legacy L1 (Ethereum) | QuantMesh (x402/Arc) | Delta |
 | :--- | :--- | :--- | :--- |
 | **Gas Cost / Query** | $1.50 | $0.00001 | 150,000x |
 | **Total Cost (60 Queries)** | $90.00 | $0.13 | 692x |

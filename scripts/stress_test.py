@@ -421,7 +421,7 @@ async def main():
 
         f.write(f"---\n\n")
         f.write(f"## Economic Validation\n\n")
-        f.write(f"| Metric | Arc (Arc Testnet) | Ethereum L1 |\n")
+        f.write(f"| Metric | Arc Network | Ethereum L1 |\n")
         f.write(f"|---|---|---|\n")
         f.write(f"| Gas per transaction | $0.00001 | $1.50 |\n")
         f.write(f"| Total gas ({session_count:,} tx) | ${arc_gas * session_count:.6f} | ${eth_gas * session_count:,.2f} |\n")

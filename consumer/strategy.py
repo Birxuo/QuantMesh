@@ -31,8 +31,8 @@ class SimpleStrategy:
     def get_real_usdc_balance(self) -> float:
         import httpx
         try:
-            rpc_url = "https://sepolia.base.org"
-            usdc_address = "0x036CbD53842c5426634e7929541eC2318f3dCF7e"
+            rpc_url = "https://rpc.testnet.arc.network"
+            usdc_address = "0x3600000000000000000000000000000000000000"
             from consumer.wallet import get_consumer_address
             addr = get_consumer_address().lower().replace("0x", "").rjust(64, "0")
             data = "0x70a08231" + addr

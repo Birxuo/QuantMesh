@@ -7,7 +7,7 @@
 This Proof of Concept (PoC) validates the technical and economic viability of the **x402 Payment Required** protocol for real-time financial signal delivery. We demonstrate that autonomous agents can purchase and settle high-frequency data at sub-cent costs with negligible latency.
 
 ## 2. Technical Environment
-- **Blockchain**: Arc (Base-optimized stack).
+- **Blockchain**: Arc Network (Testnet).
 - **Settlement Asset**: USDC (Circle Nanopayments).
 - **Communication Protocol**: Internet-Native Payments (x402 over HTTP).
 - **Backend Stack**: Python 3.12, FastAPI, WebSockets.
@@ -34,7 +34,7 @@ The following results were captured during a live execution of the QuantMesh PoC
 ## 5. Performance Comparison
 The PoC definitively proves that Ethereum Mainnet (L1) is incapable of hosting this marketplace:
 - **Cost to run the same PoC on ETH**: $90.00 (Gas alone).
-- **Cost on QuantMesh (Arc Edge)**: $0.00060 (Gas).
+- **Cost on QuantMesh (Arc)**: $0.00060 (Gas).
 - **Efficiency Multiplier**: **150,000x** on network fees.
 
 ## 6. Replication Steps

@@ -107,7 +107,7 @@ export default function TerminalPage() {
             <Logo className="w-9 h-9 transition-transform group-hover:scale-105" />
             <div className="flex flex-col">
               <span className="font-bold tracking-tight text-sm leading-none">QuantMesh Terminal</span>
-              <span className="text-[9px] text-qm-text-muted font-mono mt-1">v1.0.4-PRO_MAINNET</span>
+              <span className="text-[9px] text-qm-text-muted font-mono mt-1">v1.0.4-TESTNET_ARC</span>
             </div>
           </Link>
           <div className="hidden md:flex items-center text-qm-text-muted gap-4">
