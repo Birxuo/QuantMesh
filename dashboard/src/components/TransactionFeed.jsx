@@ -103,11 +103,11 @@ export default function TransactionFeed({ transactions, totalCount, totalUsdc })
                     </td>
                     <td className="px-5 py-3">
                       <a
-                        href={`${BLOCK_EXPLORER}/address/${tx.from || '0x52ab4dc272B136534f0C482F8Fe35811304222A3'}#tokentxns`}
+                        href={`${BLOCK_EXPLORER}/tx/${txHash}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-1 text-qm-green hover:text-black transition-colors"
-                        title="View Payer Wallet Token Transfers"
+                        title="View Transaction on ArcScan"
                       >
                         <Hash className="w-3 h-3" />
                         <span className="font-mono text-[10px]">{formatTxHash(txHash)}</span>

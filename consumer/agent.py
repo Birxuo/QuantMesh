@@ -25,6 +25,7 @@ from x402.http import x402HTTPClient
 from x402.http.clients import x402HttpxClient
 from x402.mechanisms.evm import EthAccountSigner
 from x402.mechanisms.evm.exact.register import register_exact_evm_client
+from x402.mechanisms.evm import constants as evm_constants
 
 import httpx
 
@@ -35,6 +36,21 @@ PROVIDER_URL = os.getenv("PROVIDER_URL", "http://localhost:8000")
 CONSUMER_PRIVATE_KEY = os.getenv("CONSUMER_PRIVATE_KEY", "")
 CYCLE_INTERVAL = 3  # seconds between cycles
 MIN_BALANCE_USDC = 0.10  # auto-pause threshold
+
+# ── Arc Testnet network config ──────────────────────────────────
+# Register Arc Testnet (chain 5042002) so the x402 client can
+# sign payments for this network.
+NETWORK_ID = os.getenv("NETWORK_ID", "eip155:5042002")
+USDC_CONTRACT = os.getenv("USDC_CONTRACT_ADDRESS", "0x3600000000000000000000000000000000000000")
+evm_constants.NETWORK_CONFIGS[NETWORK_ID] = {
+    "chain_id": int(NETWORK_ID.split(":")[1]),
+    "default_asset": {
+        "address": USDC_CONTRACT,
+        "name": "USDC",
+        "version": "2",
+        "decimals": 6,
+    },
+}
 
 
 def _setup_x402_client():
